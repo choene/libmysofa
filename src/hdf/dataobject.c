@@ -68,6 +68,10 @@ static int readOHDRHeaderMessageDataspace1(struct READER *reader,
       ds->dimension_size[i] =
           readValue(reader, reader->superblock.size_of_lengths);
       mylog("   dimension %d %" PRIu64 "\n", i, ds->dimension_size[i]);
+      if (ds->dimension_size[i] > 1000000) {
+        mylog("dimension_size is too large\n"); // LCOV_EXCL_LINE
+        return MYSOFA_INVALID_FORMAT;           // LCOV_EXCL_LINE
+      }
     } else
       readValue(reader, reader->superblock.size_of_lengths);
   }
